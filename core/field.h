@@ -19,7 +19,8 @@ public:
     u8 get_height_max();
     void get_height(u8 height[6]);
     FieldBit get_pop_mask();
-    FieldBit get_pop_mask(u8& color);
+    FieldBit get_pop_mask(Chain::Link& link);
+    u8 get_drop_pair_frame(i8 x, Direction::Type direction);
 public:
     bool is_occupied(i8 x, i8 y);
     bool is_occupied(i8 x, i8 y, u8 height[6]);

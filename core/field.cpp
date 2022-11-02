@@ -82,15 +82,20 @@ FieldBit Field::get_pop_mask()
     return result;
 };
 
-FieldBit Field::get_pop_mask(u8& color)
+FieldBit Field::get_pop_mask(Chain::Link& link)
 {
     FieldBit result;
     for (u8 i = 0; i < Cell::COUNT - 1; ++i) {
         FieldBit mask = this->data[i].get_pop_mask();
         result = result | mask;
-        color += mask.get_count() > 0;
+        link.count[i] = mask.get_count();
     }
     return result;
+};
+
+u8 Field::get_drop_pair_frame(i8 x, Direction::Type direction)
+{
+    return 1 + (this->get_height(x) != this->get_height(x + Direction::get_offset_x(direction)));
 };
 
 bool Field::is_occupied(i8 x, i8 y)
@@ -160,14 +165,14 @@ Chain::Data Field::pop()
 
     while (true)
     {
-        u8 color = 0;
-        FieldBit pop_mask = this->get_pop_mask(color);
+        Chain::Link link = { 0 };
+        FieldBit pop_mask = this->get_pop_mask(link);
 
-        if (color == 0) {
+        if (link.count[0] + link.count[1] + link.count[2] + link.count[3] == 0) {
             break;
         }
 
-        result.links.add({ .count = u8(pop_mask.get_count()), .color = color});
+        result.links.add(link);
 
         pop_mask = pop_mask | (FieldBit::expand(pop_mask) & this->data[static_cast<u8>(Cell::Type::GARBAGE)]);
 
