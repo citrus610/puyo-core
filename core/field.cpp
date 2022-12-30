@@ -168,7 +168,12 @@ Chain::Data Field::pop()
         Chain::Link link = { 0 };
         FieldBit pop_mask = this->get_pop_mask(link);
 
-        if (link.count[0] + link.count[1] + link.count[2] + link.count[3] == 0) {
+        //sum for all color without garbage
+        u8 sum = 0;
+        for (u8 i = 0; i < Cell::COUNT-1; ++i) {
+            sum += link.count[i];
+        }
+        if (sum == 0) {
             break;
         }
 
