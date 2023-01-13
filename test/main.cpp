@@ -28,7 +28,7 @@ int main() {
     f.print();
     std::cout << int(ch.count) << " " << int(ch.score) << std::endl;
 
-    std::cout << int(bench_pop()) << std::endl;
+    std::cout << int(bench_pop()) << " ns" << std::endl;
 
     return 0;
 }
