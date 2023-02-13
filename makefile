@@ -1,8 +1,4 @@
-ifeq ($(COMP), clang)
-CXX = clang++
-else
 CXX = g++
-endif
 
 ifeq ($(PROF), true)
 CXXPROF += -pg -no-pie
@@ -11,16 +7,14 @@ CXXPROF += -s
 endif
 
 ifeq ($(BUILD), debug)
-CXXFLAGS += -fdiagnostics-color=always -DUNICODE -std=c++20 -Wall -Og -g -march=native
+CXXFLAGS += -fdiagnostics-color=always -DUNICODE -std=c++20 -Wall -Og -pg -no-pie
 else
-CXXFLAGS += -DNDEBUG -std=c++20 -O3 $(CXXPROF) -march=native
+CXXFLAGS += -DNDEBUG -std=c++20 -O3 -msse4 -mbmi2 -flto $(CXXPROF) -march=native
 endif
 
-ifeq ($(USE_PEXT), true)
-CXXFLAGS += -DUSE_PEXT
+ifeq ($(PEXT), true)
+CXXFLAGS += -DPEXT
 endif
-
-STATIC_LIB = -luser32 -lgdi32 -lopengl32 -lgdiplus -lShlwapi -ldwmapi -lstdc++fs -lsetupapi -lhid -static
 
 .PHONY: all test clean makedir
 
