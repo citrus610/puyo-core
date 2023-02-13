@@ -1,4 +1,5 @@
 # puyo-core
-fast puyo implementation
-compile with lto, USE_PEXT preprocessor for best performance
-check if your cpu support `pext` instruction
+- fast puyo puyo implementation
+- only work on cpus that support sse4 and mbi2
+- `make` to build
+- `make PEXT=true` to enable `pext`, only work on cpus that support `make` 
