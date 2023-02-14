@@ -26,6 +26,7 @@ public:
     FieldBit get_mask_13();
     FieldBit get_mask_pop();
     FieldBit get_mask_group(i8 x, i8 y);
+    FieldBit get_mask_group_4(i8 x, i8 y);
     FieldBit get_mask_group_lsb();
 public:
     void pop(FieldBit& mask);

@@ -142,6 +142,24 @@ FieldBit FieldBit::get_mask_group(i8 x, i8 y)
     return m;
 };
 
+FieldBit FieldBit::get_mask_group_4(i8 x, i8 y)
+{
+    __m128i m12 = this->get_mask_12().data;
+
+    FieldBit m = FieldBit();
+    m.set_bit(x, y);
+
+    for (i32 i = 0; i < 4; ++i) {
+        __m128i m_expand = m.get_expand().data & m12;
+        if (_mm_testc_si128(m.data, m_expand)) {
+            break;
+        }
+        m.data = m_expand;
+    }
+
+    return m;
+};
+
 FieldBit FieldBit::get_mask_group_lsb()
 {
     __m128i m12 = this->get_mask_12().data;

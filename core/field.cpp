@@ -41,7 +41,7 @@ u8 Field::get_height(i8 x)
     alignas(16) u16 v[8];
     _mm_store_si128((__m128i*)v, mask.data);
 
-    return std::popcount(v[x]);
+    return 16 - std::countl_zero(v[x]);
 };
 
 u8 Field::get_height_max()
@@ -59,7 +59,7 @@ void Field::get_heights(u8 heights[6])
     _mm_store_si128((__m128i*)v, mask.data);
 
     for (i32 i = 0; i < 6; ++i) {
-        heights[i] = std::popcount(v[i]);
+        heights[i] = 16 - std::countl_zero(v[i]);
     }
 };
 
@@ -156,7 +156,7 @@ avec<Field, 19> Field::pop()
     for (i32 index = 0; index < 20; ++index) {
         Field pop = this->get_mask_pop();
         FieldBit mask_pop = pop.get_mask();
-        if (mask_pop.get_count() == 0) {
+        if (_mm_testz_si128(mask_pop.data, mask_pop.data)) {
             break;
         }
         result.add(pop);
